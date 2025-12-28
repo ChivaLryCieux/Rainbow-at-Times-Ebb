@@ -15,12 +15,12 @@ public class EnemyAI : MonoBehaviour
 
     private Animator anim;
     private bool isDead = false;   
-    private Rigidbody rb; // 缓存 Rigidbody，提高性能
+    private Rigidbody rb; 
 
     void Start()
     {
         anim = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody>(); // 在 Start 中获取，避免每次调用 GetComponent
+        rb = GetComponent<Rigidbody>(); 
 
         if (playerTarget == null)
         {
@@ -76,31 +76,27 @@ public class EnemyAI : MonoBehaviour
     {
         if (showDebugLogs) Debug.Log("[触发死亡] 发送 Die Trigger 并锁定状态");
         
-        isDead = true; // 1. 先标记死亡，防止 Update 继续运行逻辑
+        isDead = true; // 1. 先标记死亡
         anim.SetTrigger("Die");
 
         // 2. 禁用碰撞体
         Collider col = GetComponent<Collider>();
         if (col != null) col.enabled = false;
         
-        // 3. 处理刚体（修复报错的核心）
+        // 3. 处理刚体
         if (rb != null) 
         {
-            // 关键步骤：先强制把速度归零！
             rb.velocity = Vector3.zero; 
             rb.angularVelocity = Vector3.zero; 
-            
-            // 然后再开启 Kinematic，接管物理控制权
             rb.isKinematic = true;
         }
 
-        // 【可选建议】如果你还有其他的移动脚本（例如 EnemyMovement），最好在这里禁用它
-        // var movementScript = GetComponent<YourMovementScript>();
-        // if (movementScript != null) movementScript.enabled = false;
+        // ---【新增功能】---
+        // 4. 将物体缩放瞬间变为 (0, 0, 0)
+        transform.localScale = Vector3.zero;
         
-        // 【可选建议】如果有 NavMeshAgent，也需要停止
-        // var agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-        // if (agent != null) agent.enabled = false;
+        // 注意：如果你希望它是“慢慢缩小”而不是“瞬间消失”，
+        // 则需要用协程 (Coroutine) 来实现，目前的写法是瞬间消失。
     }
 
     void OnDrawGizmosSelected()
