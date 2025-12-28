@@ -39,20 +39,18 @@ public class NPCChasePlayer : MonoBehaviour
     {
         if (player == null) return;
 
-        // 【新增 1】如果刚体已经不受物理控制（说明在 EnemyAI 里死了），这里也不要跑逻辑了
+        // 如果刚体已经不受物理控制（说明在 EnemyAI 里死了），这里也不要跑逻辑了
         if (rb.isKinematic) return;
 
         AnimatorStateInfo currentState = anim.GetCurrentAnimatorStateInfo(0);
         
-        // 注意：这里删掉了 "rb.velocity = Vector3.zero"，
-        // 因为 Update 不建议处理物理，且如果此时 Kinematic 为 true 会报错。
         if (currentState.IsName("Killed") || currentState.IsName("Killing"))
         {
             isChasing = false;
             return;
         }
 
-        // 距离判断逻辑保持不变
+        // 距离判断逻辑
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
         bool isSneaking = (playerSneak != null && playerSneak.isSneaking);
 
@@ -68,7 +66,6 @@ public class NPCChasePlayer : MonoBehaviour
 
     void FixedUpdate()
     {
-        // 【新增 2 - 核心修复】 
         // 如果 EnemyAI 已经把 isKinematic 设为 true，
         // 说明角色死亡，绝对不能再碰 velocity，直接退出！
         if (rb.isKinematic) return;
