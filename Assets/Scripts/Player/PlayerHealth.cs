@@ -29,7 +29,7 @@ public class PlayerHealth : MonoBehaviour
             gameOverPanel.SetActive(true);
         }
 
-        // 3. 暂停时间 (记得在GameManager里恢复)
+        // 3. 暂停时间 (会在GameManager里恢复)
         Time.timeScale = 0f;
 
         // 4. 解锁鼠标

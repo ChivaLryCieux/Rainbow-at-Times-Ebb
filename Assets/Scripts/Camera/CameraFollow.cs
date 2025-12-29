@@ -20,6 +20,7 @@ public class CameraFollow : MonoBehaviour
         }
     }
 
+    // 所有脚本的 LateUpdate() 方法会在每一帧的最后运行，确保之前的逻辑和动画都已完成
     void LateUpdate()
     {
         if (target == null) return;

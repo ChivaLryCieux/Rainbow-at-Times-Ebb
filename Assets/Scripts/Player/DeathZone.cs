@@ -10,7 +10,7 @@ public class DeathZone : MonoBehaviour
             // 2. 尝试获取玩家身上的生命脚本
             PlayerHealth playerHealth = other.GetComponent<PlayerHealth>();
 
-            // 3. 如果找到了，就让他死
+            // 3. 如果找到了，就温柔地让他死
             if (playerHealth != null)
             {
                 playerHealth.Die();

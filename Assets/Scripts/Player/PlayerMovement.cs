@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
     public float gravity = -20f; // 自定义重力
     public float stickToGroundForce = -2f;
 
-    // ================== 新增：物理交互参数 ==================
+    // ================== 物理交互参数 ==================
     [Header("物理交互 (推箱子 & 踩天平)")]
     [Tooltip("推箱子的力度")]
     public float pushPower = 2.0f;
@@ -92,7 +92,7 @@ public class PlayerMovement : MonoBehaviour
         return Mathf.Abs(horizontalInput * moveSpeed);
     }
 
-    // ================== 新增：核心物理交互逻辑 ==================
+    // ================== 核心物理交互逻辑 ==================
     // 当 CharacterController 碰到任何带 Collider 的物体时自动调用
     void OnControllerColliderHit(ControllerColliderHit hit)
     {

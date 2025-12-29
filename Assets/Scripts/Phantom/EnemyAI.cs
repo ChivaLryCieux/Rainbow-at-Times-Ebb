@@ -70,8 +70,7 @@ public class EnemyAI : MonoBehaviour
         if (showDebugLogs) Debug.Log(">>> 确认触发攻击 Trigger");
         anim.SetTrigger("Attack");
     }
-
-    // --- 修改重点在这里 ---
+    
     void DieLogic()
     {
         if (showDebugLogs) Debug.Log("[触发死亡] 发送 Die Trigger 并锁定状态");
@@ -90,12 +89,11 @@ public class EnemyAI : MonoBehaviour
             rb.angularVelocity = Vector3.zero; 
             rb.isKinematic = true;
         }
-
-        // ---【新增功能】---
+        
         // 4. 将物体缩放瞬间变为 (0, 0, 0)
         transform.localScale = Vector3.zero;
         
-        // 注意：如果你希望它是“慢慢缩小”而不是“瞬间消失”，
+        // 如果希望它是“慢慢缩小”而不是“瞬间消失”，
         // 则需要用协程 (Coroutine) 来实现，目前的写法是瞬间消失。
     }
 

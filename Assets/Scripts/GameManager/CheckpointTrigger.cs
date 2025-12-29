@@ -14,9 +14,8 @@ public class CheckpointTrigger : MonoBehaviour
             
             // 调用管理器的保存方法，传入当前存档点的位置
             GameManager.Instance.SaveCheckpoint(transform.position);
-
-            // 这里可以加一些反馈，比如变色、播放音效
-            Debug.Log("触发存档点！");
+            
+            Debug.Log("到达存档点！");
         }
     }
 }

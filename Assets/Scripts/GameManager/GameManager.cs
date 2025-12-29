@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            // 如果你希望跨关卡保留数据，可以取消下面这行的注释
+            // 如果希望跨关卡保留数据，可以取消下面这行的注释
             // DontDestroyOnLoad(gameObject); 
         }
         else
@@ -75,10 +75,7 @@ public class GameManager : MonoBehaviour
                     // 2. 修改位置
                     player.transform.position = spawnPos;
 
-                    // 3. (可选) 如果你的横版游戏有固定的朝向（比如由于你是3D模型），可以在这里重置旋转
-                    // player.transform.rotation = Quaternion.Euler(0, 90, 0); 
-
-                    // 4. 重新启用 CharacterController
+                    // 3. 重新启用 CharacterController
                     cc.enabled = true;
                 }
                 else
