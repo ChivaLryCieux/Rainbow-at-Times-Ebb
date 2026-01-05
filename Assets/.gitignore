@@ -1,0 +1,66 @@
+﻿# -------------------
+# Unity 核心文件夹 (必须忽略)
+# -------------------
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Mm]emoryCaptures/
+
+# -------------------
+# 自动生成的 IDE 项目文件 (必须忽略)
+# -------------------
+# Visual Studio / MonoDevelop / Rider 生成的解决方案和项目文件
+/*.sln
+/*.csproj
+/*.unityproj
+/*.suo
+/*.tmp
+/*.user
+/*.userprefs
+/*.pidb
+/*.booproj
+/*.svd
+/*.pdb
+/*.opendb
+/*.VC.db
+
+# -------------------
+# 编辑器特定配置文件夹
+# -------------------
+# VS Code
+/.vscode/
+
+# JetBrains Rider / IntelliJ
+/.idea/
+
+# Visual Studio
+/.vs/
+
+# -------------------
+# 操作系统生成文件
+# -------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# -------------------
+# 输出文件/构建包
+# -------------------
+*.apk
+*.aab
+*.unitypackage
+*.app
+
+# -------------------
+# 异常处理 (千万不要忽略 Meta 文件！)
+# -------------------
+# Unity 依赖 .meta 文件来记录资源引用，绝对不能忽略
+!*.meta
