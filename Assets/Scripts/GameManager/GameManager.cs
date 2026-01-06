@@ -5,101 +5,174 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    // 定义存储的键名，防止拼写错误
-    private const string PREF_POS_X = "CheckpointX";
-    private const string PREF_POS_Y = "CheckpointY";
-    private const string PREF_POS_Z = "CheckpointZ";
-    private const string PREF_HAS_CHECKPOINT = "HasCheckpoint";
+    // --- Key 定义 ---
+    private const string PREF_TOTAL_COUNT = "TotalCheckpoints";
+    private const string PREF_CURRENT_INDEX = "CurrentIndex";
+    private const string PREF_BASE_X = "CP_{0}_X";
+    private const string PREF_BASE_Y = "CP_{0}_Y";
+    private const string PREF_BASE_Z = "CP_{0}_Z";
+
+    public int CurrentIndex { get; private set; } = 0;
+    public int MaxIndex { get; private set; } = 0;
 
     private void Awake()
     {
-        // 单例模式：保证全局只有一个GameManager
-        if (Instance == null)
-        {
-            Instance = this;
-            // 如果希望跨关卡保留数据，可以取消下面这行的注释
-            // DontDestroyOnLoad(gameObject); 
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
     }
 
     private void Start()
     {
+        // PlayerPrefs.DeleteAll(); // 测试清档，请注释掉
         Time.timeScale = 1f;
-        // 场景加载开始时，尝试恢复玩家位置
-        LoadCheckpoint();
-    }
 
-    // --- 1. 保存存档点 ---
-    public void SaveCheckpoint(Vector3 position)
-    {
-        PlayerPrefs.SetFloat(PREF_POS_X, position.x);
-        PlayerPrefs.SetFloat(PREF_POS_Y, position.y);
-        PlayerPrefs.SetFloat(PREF_POS_Z, position.z);
-        
-        // 标记我们已经有了存档
-        PlayerPrefs.SetInt(PREF_HAS_CHECKPOINT, 1);
-        
-        // 强制写入磁盘
-        PlayerPrefs.Save();
-        Debug.Log("存档成功：坐标 " + position);
-    }
-
-    // --- 2. 加载并恢复玩家位置
-    public void LoadCheckpoint()
-    {
-        // 1. 检查是否有存档
-        if (PlayerPrefs.GetInt("HasCheckpoint", 0) == 1)
+        // 1. 全新游戏初始化
+        if (!PlayerPrefs.HasKey(PREF_TOTAL_COUNT))
         {
-            float x = PlayerPrefs.GetFloat("CheckpointX");
-            float y = PlayerPrefs.GetFloat("CheckpointY");
-            float z = PlayerPrefs.GetFloat("CheckpointZ");
-            Vector3 spawnPos = new Vector3(x, y, z);
-
+            Debug.Log("初始化新游戏数据...");
             GameObject player = GameObject.FindGameObjectWithTag("Player");
-            
             if (player != null)
             {
-                // 获取 CharacterController 组件
-                CharacterController cc = player.GetComponent<CharacterController>();
-
-                if (cc != null)
-                {
-                    // 【关键步骤】
-                    // 1. 必须先禁用 CharacterController，否则它会覆盖你的坐标修改
-                    cc.enabled = false;
-
-                    // 2. 修改位置
-                    player.transform.position = spawnPos;
-
-                    // 3. 重新启用 CharacterController
-                    cc.enabled = true;
-                }
-                else
-                {
-                    // 如果没找到组件，则回退到普通移动方式
-                    player.transform.position = spawnPos;
-                }
-
-                Debug.Log("玩家已复活，位置：" + spawnPos);
+                SavePosition(0, player.transform.position);
+                UpdateRuntimeIndices(0, 0);
+                SaveMeta(1, 0); // Total=1, Current=0
             }
+        }
+        else
+        {
+            // 2. 读取旧数据
+            MaxIndex = PlayerPrefs.GetInt(PREF_TOTAL_COUNT, 0) - 1;
+
+            // 容错处理：万一 MaxIndex 读出来小于 0
+            if (MaxIndex < 0) MaxIndex = 0;
+
+            if (PlayerPrefs.HasKey(PREF_CURRENT_INDEX))
+            {
+                CurrentIndex = PlayerPrefs.GetInt(PREF_CURRENT_INDEX);
+            }
+            else
+            {
+                CurrentIndex = MaxIndex;
+            }
+
+            // 恢复位置
+            LoadCheckpoint(CurrentIndex);
         }
     }
 
-    // --- 3. 供UI调用的“继续游戏”方法 ---
-    public void ReloadScene()
+    // --- 核心修改：智能添加存档点 ---
+    public void AddCheckpoint(Vector3 position)
     {
-        // 获取当前场景名字并重新加载
-        Scene currentScene = SceneManager.GetActiveScene();
-        SceneManager.LoadScene(currentScene.name);
+        // A. 防重检查：遍历所有已存在的存档点
+        // 如果当前触发的位置和之前存过的某个点距离很近，就认为是同一个点
+        for (int i = 0; i <= MaxIndex; i++)
+        {
+            Vector3 savedPos = GetSavedPosition(i);
+
+            // 如果距离小于 2.0f (根据你的触发器大小调整)，视为同一个点
+            if (Vector3.Distance(position, savedPos) < 2.0f)
+            {
+                Debug.Log($"检测到已存在的存档点 (Index: {i})，仅更新当前进度，不新增。");
+
+                // 仅更新当前所在位置
+                if (CurrentIndex != i)
+                {
+                    CurrentIndex = i;
+                    PlayerPrefs.SetInt(PREF_CURRENT_INDEX, CurrentIndex);
+                    PlayerPrefs.Save();
+                }
+                return; // 【关键】直接退出，不执行后面的新增代码
+            }
+        }
+
+        // B. 如果是全新的位置，才执行新增逻辑
+        int newIndex = MaxIndex + 1;
+        SavePosition(newIndex, position);
+        UpdateRuntimeIndices(newIndex, newIndex);
+        SaveMeta(MaxIndex + 1, CurrentIndex);
+
+        Debug.Log($"<color=green>新区域解锁！存档点 {newIndex} 已保存</color>");
     }
 
-    // (可选) 新游戏开始时清除存档
-    public void ClearCheckpoint()
+    public void LoadCheckpoint(int index)
+    {
+        if (index < 0 || index > MaxIndex) return;
+
+        Vector3 spawnPos = GetSavedPosition(index);
+        TeleportPlayer(spawnPos);
+
+        CurrentIndex = index;
+        PlayerPrefs.SetInt(PREF_CURRENT_INDEX, CurrentIndex);
+        PlayerPrefs.Save();
+
+        Debug.Log(index == 0 ? "已回到出生点" : $"已加载存档点 {index}");
+    }
+
+    // --- 辅助方法：读取指定 Index 的坐标 ---
+    private Vector3 GetSavedPosition(int index)
+    {
+        string keyX = string.Format(PREF_BASE_X, index);
+        string keyY = string.Format(PREF_BASE_Y, index);
+        string keyZ = string.Format(PREF_BASE_Z, index);
+
+        float x = PlayerPrefs.GetFloat(keyX);
+        float y = PlayerPrefs.GetFloat(keyY);
+        float z = PlayerPrefs.GetFloat(keyZ);
+
+        return new Vector3(x, y, z);
+    }
+
+    private void TeleportPlayer(Vector3 targetPos)
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            CharacterController cc = player.GetComponent<CharacterController>();
+            if (cc != null) cc.enabled = false;
+            player.transform.position = targetPos;
+            if (cc != null) cc.enabled = true;
+        }
+    }
+
+    private void SavePosition(int index, Vector3 pos)
+    {
+        PlayerPrefs.SetFloat(string.Format(PREF_BASE_X, index), pos.x);
+        PlayerPrefs.SetFloat(string.Format(PREF_BASE_Y, index), pos.y);
+        PlayerPrefs.SetFloat(string.Format(PREF_BASE_Z, index), pos.z);
+    }
+
+    private void UpdateRuntimeIndices(int max, int current)
+    {
+        MaxIndex = max;
+        CurrentIndex = current;
+    }
+
+    private void SaveMeta(int totalCount, int currentIndex)
+    {
+        PlayerPrefs.SetInt(PREF_TOTAL_COUNT, totalCount);
+        PlayerPrefs.SetInt(PREF_CURRENT_INDEX, currentIndex);
+        PlayerPrefs.Save();
+    }
+
+    public void QuitGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
+    }
+
+    public void ReloadScene()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    [ContextMenu("清除存档")]
+    public void DeleteSave()
     {
         PlayerPrefs.DeleteAll();
+        Debug.Log("存档已清空");
     }
 }

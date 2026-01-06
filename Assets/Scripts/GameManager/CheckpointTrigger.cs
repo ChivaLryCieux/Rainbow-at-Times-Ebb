@@ -11,10 +11,10 @@ public class CheckpointTrigger : MonoBehaviour
         if (other.CompareTag("Player") && !isActivated)
         {
             isActivated = true;
-            
+
             // 调用管理器的保存方法，传入当前存档点的位置
-            GameManager.Instance.SaveCheckpoint(transform.position);
-            
+            GameManager.Instance.AddCheckpoint(transform.position);
+
             Debug.Log("到达存档点！");
         }
     }
