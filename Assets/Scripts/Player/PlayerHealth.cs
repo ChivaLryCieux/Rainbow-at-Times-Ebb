@@ -3,40 +3,38 @@ using UnityEngine;
 public class PlayerHealth : MonoBehaviour
 {
     [Header("UI设置")]
-    public GameObject gameOverPanel; // 死亡弹窗
-
+    public GameObject gameOverPanel;
     private CharacterController cc;
+    
+    // 假设你的移动脚本叫 PlayerMovement (请根据实际名字修改)
+    private MonoBehaviour movementScript; 
 
     private void Start()
     {
         cc = GetComponent<CharacterController>();
+        // 获取移动脚本，比如 PlayerMovement
+        // movementScript = GetComponent<PlayerMovement>(); 
+        // 如果你不知道具体名字，也可以尝试通用的获取方式，或者直接拖拽赋值
     }
 
-    // 提供一个公开的方法供外界调用
     public void Die()
     {
-        Debug.Log("玩家生命归零！");
+        // 1. 先把移动脚本禁用了！这能解决 CharacterController 的黄色报错
+        // 假设你的移动控制脚本在同一个物体上
+        var moveScript = GetComponent<PlayerMovement>(); // 替换成你真实的脚本类名
+        if (moveScript != null) moveScript.enabled = false;
 
-        // 1. 禁用 CharacterController (防止尸体滑行或无法重生)
-        if (cc != null)
-        {
-            cc.enabled = false;
-        }
+        // 2. 禁用 CC
+        if (cc != null) cc.enabled = false;
 
-        // 2. 显示死亡界面
-        if (gameOverPanel != null)
-        {
-            gameOverPanel.SetActive(true);
-        }
+        // 3. 显示 UI (如果你都要跳转场景了，这个Panel其实只会出现一瞬间)
+        if (gameOverPanel != null) gameOverPanel.SetActive(true);
 
-        // 3. 暂停时间 (会在GameManager里恢复)
+        // 4. 暂停时间
         Time.timeScale = 0f;
 
-        // 4. 解锁鼠标
+        // 5. 解锁鼠标
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-
-        // (进阶) 如果有死亡动画，可以在这里播放
-        // GetComponent<Animator>().SetTrigger("Die");
     }
 }
