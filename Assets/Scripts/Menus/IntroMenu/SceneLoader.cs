@@ -13,4 +13,13 @@ public class SceneLoader : MonoBehaviour
         // 这里的 sceneName 将从 Unity 编辑器中传入
         SceneManager.LoadScene(sceneName);
     }
+    
+    public void QuitGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
+    }
 }

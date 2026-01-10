@@ -12837,6 +12837,11 @@ PrefabInstance:
       propertyPath: m_ReferenceResolution.y
       value: 1080
       objectReference: {fileID: 0}
+    - target: {fileID: 3025340304190120476, guid: 192ede1c2bd04d24898fc26798cb0225,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3273003023284971380, guid: 192ede1c2bd04d24898fc26798cb0225,
         type: 3}
       propertyPath: m_Pivot.x
@@ -13095,6 +13100,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PauseCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 7449653764722541603, guid: 192ede1c2bd04d24898fc26798cb0225,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7533945770694622324, guid: 192ede1c2bd04d24898fc26798cb0225,
         type: 3}
