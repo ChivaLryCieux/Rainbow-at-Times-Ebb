@@ -52,3 +52,13 @@ sysinfo.txt
 xcuserdata/
 xcworkspace/
 DerivedData/
+
+# =============== #
+# VS Code #
+# =============== #
+.vscode/
+*.slnx
+*.sln
+*.csproj
+*.user
+*.userprefs
