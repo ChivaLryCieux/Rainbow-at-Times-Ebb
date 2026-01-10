@@ -1,20 +1,28 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using System.Collections; // 必须引入这个
 
 public class DeathZone : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        // 1. 判断是不是玩家
         if (other.CompareTag("Player"))
         {
-            // 2. 尝试获取玩家身上的生命脚本
             PlayerHealth playerHealth = other.GetComponent<PlayerHealth>();
-
-            // 3. 如果找到了，就温柔地让他死
             if (playerHealth != null)
             {
                 playerHealth.Die();
+                // 开启不受时间暂停影响的协程
+                StartCoroutine(LoadOverMenuWithDelay());
             }
         }
+    }
+
+    IEnumerator LoadOverMenuWithDelay()
+    {
+        // 使用 Realtime 等待，这样即使 Time.timeScale = 0 也能继续走
+        yield return new WaitForSecondsRealtime(1f); 
+
+        SceneManager.LoadScene("OverMenu");
     }
 }
