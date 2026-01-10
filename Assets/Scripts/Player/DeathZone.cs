@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.Collections; // 必须引入这个
+using System.Collections;
 
 public class DeathZone : MonoBehaviour
 {

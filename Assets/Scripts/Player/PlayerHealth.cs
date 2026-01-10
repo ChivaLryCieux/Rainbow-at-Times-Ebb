@@ -19,7 +19,7 @@ public class PlayerHealth : MonoBehaviour
 
     public void Die()
     {
-        // 1. 先把移动脚本禁用了！这能解决 CharacterController 的黄色报错
+        // 1. 先把移动脚本禁用了！
         // 假设你的移动控制脚本在同一个物体上
         var moveScript = GetComponent<PlayerMovement>(); // 替换成你真实的脚本类名
         if (moveScript != null) moveScript.enabled = false;
