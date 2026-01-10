@@ -7,7 +7,7 @@ public class PauseMenuController : MonoBehaviour
     public GameObject pausePanel;
 
     [Header("核心按钮")]
-    public Button btnResume;    // 新增：继续游戏（仅关闭菜单）
+    public Button btnResume;    // 继续游戏（仅关闭菜单）
     public Button btnQuit;      // 退出游戏
     public Button btnInventory; // 背包
 
@@ -30,7 +30,11 @@ public class PauseMenuController : MonoBehaviour
         btnResume.onClick.AddListener(ResumeGame);
 
         // 退出游戏
-        btnQuit.onClick.AddListener(() => GameManager.Instance.QuitGame());
+        btnQuit.onClick.AddListener(() => 
+        {
+            Time.timeScale = 1f; // 1. 解除暂停状态！
+            UnityEngine.SceneManagement.SceneManager.LoadScene("IntroMenu"); // 2. 跳转
+        });
 
         // 背包（占位）
         btnInventory.onClick.AddListener(() => Debug.Log("打开背包"));

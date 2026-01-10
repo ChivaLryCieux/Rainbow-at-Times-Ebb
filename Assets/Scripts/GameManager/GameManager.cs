@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // --- 核心修改：智能添加存档点 ---
+    // --- 智能添加存档点 ---
     public void AddCheckpoint(Vector3 position)
     {
         // A. 防重检查：遍历所有已存在的存档点
