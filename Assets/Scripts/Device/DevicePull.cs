@@ -48,6 +48,7 @@ public class MagneticWallCC : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        if (!this.enabled) return;
         if (showGizmos)
         {
             Gizmos.color = new Color(0, 1, 1, 0.3f); // 青色以示区别

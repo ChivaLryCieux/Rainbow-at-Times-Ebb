@@ -730,6 +730,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8799866316716235524, guid: d353e51cdbc41f64592c64b846579e83,
         type: 3}
+      propertyPath: m_text
+      value: Main Menu
+      objectReference: {fileID: 0}
+    - target: {fileID: 8799866316716235524, guid: d353e51cdbc41f64592c64b846579e83,
+        type: 3}
       propertyPath: m_fontAsset
       value: 
       objectReference: {fileID: 11400000, guid: 21c937686dcf23a428ae117df25e836c,
