@@ -12,8 +12,7 @@ public class MagneticWall : MonoBehaviour
     [Tooltip("主角的Tag")]
     public string targetTag = "Player";
 
-    [Header("调试")]
-    public bool showGizmos = true;
+    
 
     // 当主角停留在触发器内部时每帧调用
     private void OnTriggerStay(Collider other)
@@ -46,18 +45,5 @@ public class MagneticWall : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmos()
-    {
-        if (!this.enabled) return;
-        if (showGizmos)
-        {
-            Gizmos.color = new Color(1, 0.5f, 0, 0.3f); // 橙色以示区别
-            BoxCollider box = GetComponent<BoxCollider>();
-            if (box != null)
-            {
-                Gizmos.matrix = transform.localToWorldMatrix;
-                Gizmos.DrawCube(box.center, box.size);
-            }
-        }
-    }
+    
 }
