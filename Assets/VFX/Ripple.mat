@@ -13,7 +13,6 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - _ENABLE_FOG_ON_TRANSPARENT
   - _SURFACE_TYPE_TRANSPARENT
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -64,17 +63,17 @@ Material:
     - _DoubleSidedNormalMode: 2
     - _DstBlend: 10
     - _EnableBlendModePreserveSpecularLighting: 0
-    - _EnableFogOnTransparent: 1
+    - _EnableFogOnTransparent: 0
     - _ExcludeFromTUAndAA: 0
-    - _NoiseContrast: 0.0869
+    - _NoiseContrast: 0.04
     - _NoiseScale: 1
     - _NoiseSpeed: 0.2
     - _OpaqueCullMode: 2
     - _RenderQueueType: 4
     - _Ripple: 1
     - _RippleConstract: 1
-    - _RippleCount: 2.1
-    - _RippleSpeed: 0.5
+    - _RippleCount: 1
+    - _RippleSpeed: 0.48
     - _SrcBlend: 1
     - _StencilRef: 0
     - _StencilRefDepth: 1

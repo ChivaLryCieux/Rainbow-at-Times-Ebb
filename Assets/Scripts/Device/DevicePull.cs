@@ -12,8 +12,7 @@ public class MagneticWallCC : MonoBehaviour
     [Tooltip("主角的Tag")]
     public string targetTag = "Player";
 
-    [Header("调试")]
-    public bool showGizmos = true;
+   
 
     // 当主角停留在触发器内部时每帧调用
     private void OnTriggerStay(Collider other)
@@ -42,21 +41,6 @@ public class MagneticWallCC : MonoBehaviour
                 // 5. 核心区别：直接调用 Move 方法
                 // 注意：这会和主角自身的移动脚本叠加
                 cc.Move(direction * currentSpeed * Time.deltaTime);
-            }
-        }
-    }
-
-    private void OnDrawGizmos()
-    {
-        if (!this.enabled) return;
-        if (showGizmos)
-        {
-            Gizmos.color = new Color(0, 1, 1, 0.3f); // 青色以示区别
-            BoxCollider box = GetComponent<BoxCollider>();
-            if (box != null)
-            {
-                Gizmos.matrix = transform.localToWorldMatrix;
-                Gizmos.DrawCube(box.center, box.size);
             }
         }
     }
