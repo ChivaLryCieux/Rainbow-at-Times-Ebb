@@ -1,50 +1,69 @@
 using UnityEngine;
+using System.Collections;
 
-public class GravitySwitch : MonoBehaviour
+// 挂在开关物体上，需要 Collider (Is Trigger)
+public class TimedGravitySwitch : MonoBehaviour
 {
-    [Header("连接")]
-    [Tooltip("拖入要控制的重力区域")]
-    public GravityControlZone targetZone;
+    [Header("连接设置")]
+    [Tooltip("拖入控制重力的区域 (GravityZone)")]
+    public GravityZone targetZone;
+
+    [Header("参数")]
+    [Tooltip("反重力持续时间 (秒)")]
+    public float activeTime = 3.0f;
+    public string triggerTag = "Player";
 
     [Header("视觉反馈")]
-    public float pressDistance = 0.05f;
+    public float pressDepth = 0.1f;
+    public float animSpeed = 5f;
 
-    private bool _isPressed = false;
+    // 内部变量
     private Vector3 _originalPos;
+    private Vector3 _targetPos;
+    private bool _isLocked = false;
 
     void Start()
     {
         _originalPos = transform.position;
+        _targetPos = _originalPos;
+    }
+
+    void Update()
+    {
+        // 按钮平滑移动
+        if (Vector3.Distance(transform.position, _targetPos) > 0.001f)
+        {
+            transform.position = Vector3.Lerp(transform.position, _targetPos, Time.deltaTime * animSpeed);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        // 只有主角能触发
-        if (other.CompareTag("Player") && !_isPressed)
-        {
-            _isPressed = true;
-            UpdateVisual(true);
+        // 冷却中 或 不是玩家 -> 忽略
+        if (_isLocked || !other.CompareTag(triggerTag)) return;
 
-            if (targetZone != null)
-            {
-                // 切换重力方向
-                targetZone.ToggleGravity();
-            }
-        }
+        StartCoroutine(ActivateRoutine());
     }
 
-    private void OnTriggerExit(Collider other)
+    private IEnumerator ActivateRoutine()
     {
-        if (other.CompareTag("Player") && _isPressed)
-        {
-            _isPressed = false;
-            UpdateVisual(false);
-        }
-    }
+        _isLocked = true;
 
-    private void UpdateVisual(bool pressed)
-    {
-        float targetY = pressed ? _originalPos.y - pressDistance : _originalPos.y;
-        transform.position = new Vector3(_originalPos.x, targetY, _originalPos.z);
+        // 1. 按钮下沉
+        _targetPos = _originalPos - new Vector3(0, pressDepth, 0);
+
+        // 2. 告诉区域：有一个开关激活了！(计数 +1)
+        if (targetZone != null) targetZone.AddActivation();
+
+        // 3. 等待
+        yield return new WaitForSeconds(activeTime);
+
+        // 4. 按钮回弹
+        _targetPos = _originalPos;
+
+        // 5. 告诉区域：有一个开关结束了！(计数 -1)
+        if (targetZone != null) targetZone.RemoveActivation();
+
+        _isLocked = false;
     }
 }

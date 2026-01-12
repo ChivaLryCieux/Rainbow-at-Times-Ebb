@@ -1,27 +1,27 @@
 using UnityEngine;
 
-public class RemoteControlSwitch : MonoBehaviour
+public class DeceleratorSwitch : MonoBehaviour
 {
     [Header("连接")]
-    [Tooltip("正在移动的物体")]
+    [Tooltip("拖入物体")]
     public PathEventMover targetMover;
 
-    [Header("控制参数")]
-    [Tooltip("每次踩下增加多少速度")]
-    public float speedIncrement = 2.0f;
+    [Header("游戏逻辑")]
+    [Tooltip("每次减少多少速度")]
+    public float speedReduction = 5.0f;
 
     [Tooltip("是否切换方向")]
-    public bool toggleDirectionOnPress = true;
+    public bool toggleDirectionOnPress = false;
 
     [Header("视觉反馈")]
-    public float pressDistance = 0.05f; // 下沉深度
-    public float pressSpeed = 5f;       // 动画平滑度
-    public float resetDelay = 0.5f;     // 按钮保持按下的时间(秒)，之后自动弹起
+    public float pressDistance = 0.05f;
+    public float pressSpeed = 5f;
+    public float resetDelay = 0.5f; // 按钮回弹的冷却时间
 
     // 内部变量
     private Vector3 _originalPos;
     private Vector3 _targetPos;
-    private bool _isLocked = false;     // 冷却锁
+    private bool _isLocked = false;
 
     void Start()
     {
@@ -31,7 +31,7 @@ public class RemoteControlSwitch : MonoBehaviour
 
     void Update()
     {
-        // 这里的 Lerp 逻辑和你提供的一模一样，负责平滑移动
+        // 视觉平滑移动
         if (Vector3.Distance(transform.position, _targetPos) > 0.001f)
         {
             transform.position = Vector3.Lerp(transform.position, _targetPos, Time.deltaTime * pressSpeed);
@@ -40,10 +40,8 @@ public class RemoteControlSwitch : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // 1. 如果还在冷却/按下状态，忽略
         if (_isLocked) return;
 
-        // 2. 只有玩家能触发
         if (other.CompareTag("Player"))
         {
             TriggerAction();
@@ -52,33 +50,31 @@ public class RemoteControlSwitch : MonoBehaviour
 
     void TriggerAction()
     {
-        _isLocked = true; // 锁定，防止短时间内重复触发
+        _isLocked = true; // 锁定
 
-        // --- 视觉：按钮下沉 ---
+        // 1. 视觉：下沉
         _targetPos = _originalPos - new Vector3(0, pressDistance, 0);
 
-        // --- 逻辑：控制远处的物体 ---
+        // 2. 逻辑：减速
         if (targetMover != null)
         {
-            // 加速
-            targetMover.AddSpeed(speedIncrement);
+            // 调用减速方法
+            targetMover.ReduceSpeed(speedReduction);
 
-            // 变向 (如果在 Inspector 勾选了的话)
             if (toggleDirectionOnPress)
             {
                 targetMover.ToggleDirection();
             }
         }
 
-        // --- 定时复位：几秒后按钮自动弹起，允许再次踩踏 ---
+        // 3. 计时：回弹
         Invoke("ResetButton", resetDelay);
     }
 
-    // 自动回弹函数
     private void ResetButton()
     {
         _isLocked = false;
-        // 视觉：按钮回弹
+        // 视觉：回弹
         _targetPos = _originalPos;
     }
 }
