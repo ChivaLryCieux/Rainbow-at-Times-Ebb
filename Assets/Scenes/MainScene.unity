@@ -1448,6 +1448,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: round3-p1
       objectReference: {fileID: 0}
+    - target: {fileID: 2111523977421757697, guid: b1fc6952ac3688641a2546be48c37ed0,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 35a1ccc084a3664459fe7494ecc9f7d4, type: 2}
     - target: {fileID: 4304184911414038295, guid: b1fc6952ac3688641a2546be48c37ed0,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -1736,7 +1741,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetMover: {fileID: 2066950232}
-  speedReduction: 4
+  speedReduction: 5
   toggleDirectionOnPress: 0
   pressDistance: 0.25
   pressSpeed: 10
@@ -2570,8 +2575,8 @@ MonoBehaviour:
   targetZone: {fileID: 1671324002}
   activeTime: 3
   triggerTag: Player
-  pressDepth: 0.25
-  animSpeed: 10
+  pressDepth: 0.1
+  animSpeed: 5
 --- !u!54 &322494488
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -11175,8 +11180,8 @@ MonoBehaviour:
   targetZone: {fileID: 1671324002}
   activeTime: 3
   triggerTag: Player
-  pressDepth: 0.25
-  animSpeed: 10
+  pressDepth: 0.1
+  animSpeed: 5
 --- !u!54 &1237260715
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -14273,8 +14278,8 @@ MonoBehaviour:
   targetZone: {fileID: 1671324002}
   activeTime: 3
   triggerTag: Player
-  pressDepth: 0.25
-  animSpeed: 10
+  pressDepth: 0.1
+  animSpeed: 5
 --- !u!54 &1608507951
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -19480,7 +19485,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotateSpeed: 120
-  openAngleOffset: -180
+  openAngleOffset: -90
 --- !u!54 &2120825800
 Rigidbody:
   m_ObjectHideFlags: 0
