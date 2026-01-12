@@ -9012,6 +9012,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 543450653659950060}
     m_Modifications:
+    - target: {fileID: 263168770452672086, guid: 1e66f6818f846a8418da8b01b9bab057,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 6.629573
+      objectReference: {fileID: 0}
+    - target: {fileID: 263168770452672086, guid: 1e66f6818f846a8418da8b01b9bab057,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 263168770452672086, guid: 1e66f6818f846a8418da8b01b9bab057,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -3.95
+      objectReference: {fileID: 0}
     - target: {fileID: 2343619066811698255, guid: 1e66f6818f846a8418da8b01b9bab057,
         type: 3}
       propertyPath: pullSpeed
@@ -18220,7 +18235,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 73c176f402d2c2f4d929aa5da7585d17, type: 2}
+  - {fileID: 2100000, guid: 1dddf8d785a416f4b844a42947e9b7d3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
