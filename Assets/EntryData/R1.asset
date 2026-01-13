@@ -15,4 +15,5 @@ MonoBehaviour:
   id: R1
   title: R1
   description: R1R1
+  entryImage: {fileID: 21300000, guid: 66cda031f9e168d41b4365e67ef33842, type: 3}
   category: 0

@@ -1,38 +1,45 @@
 using UnityEngine;
 using TMPro;
-using UnityEngine.UI; 
+using UnityEngine.UI; // 必须引入这个才能控制 Image
 
 public class WikiUIItem : MonoBehaviour
 {
-    [Header("UI 组件设置")]
-    public TextMeshProUGUI titleText;      // 用于显示标题
-    public TextMeshProUGUI descriptionText; // 用于显示正文内容
+    [Header("UI 组件")]
+    public TextMeshProUGUI titleText;
+    public TextMeshProUGUI descriptionText;
+    
+    // --- 新增 ---
+    public Image contentImage; // 用来显示插图的 UI 组件
+    // -----------
 
-    [Header("布局选项")]
-    public bool autoResize = true; // 是否自动调整高度
+    public bool autoResize = true;
 
-    /// <summary>
-    /// 初始化条目内容
-    /// </summary>
-    /// <param name="title">标题字符串</param>
-    /// <param name="content">详细介绍字符串</param>
-    public void Setup(string title, string content)
+    // 修改 Setup 方法，增加 sprite 参数
+    public void Setup(string title, string content, Sprite sprite)
     {
-        // 1. 设置标题
-        if (titleText != null)
-        {
-            titleText.text = title;
-        }
+        if (titleText != null) titleText.text = title;
+        if (descriptionText != null) descriptionText.text = content;
 
-        // 2. 设置内容
-        if (descriptionText != null)
+        // --- 图片处理逻辑 ---
+        if (contentImage != null)
         {
-            descriptionText.text = content;
+            if (sprite != null)
+            {
+                // 如果有图：显示图片组件，并赋值
+                contentImage.gameObject.SetActive(true);
+                contentImage.sprite = sprite;
+                
+                // 推荐：保持图片比例，防止被拉伸变形
+                contentImage.preserveAspect = true; 
+            }
+            else
+            {
+                // 如果没图：隐藏图片组件，节省空间
+                contentImage.gameObject.SetActive(false);
+            }
         }
+        // ------------------
 
-        // 3. (可选) 强制刷新布局
-        // 当文本内容很长时，Unity 的 ContentSizeFitter 有时需要一帧才能反应过来
-        // 这行代码可以强制它立即计算高度，防止文字重叠
         if (autoResize)
         {
             LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());

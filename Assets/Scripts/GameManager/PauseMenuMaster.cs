@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement; 
+using TMPro; 
 
 public class PauseMenuMaster : MonoBehaviour
 {
@@ -9,8 +10,8 @@ public class PauseMenuMaster : MonoBehaviour
     public GameObject pauseMenuRoot; 
     
     [Header("--- 设置功能按钮 ---")]
-    public Button btnResume; // 继续游戏
-    public Button btnQuit;   // 退出游戏
+    public Button btnResume; 
+    public Button btnQuit;   
 
     [Header("--- 顶部导航栏 ---")]
     public Image[] topButtonImages; 
@@ -28,9 +29,14 @@ public class PauseMenuMaster : MonoBehaviour
     public Button btnReload;    
     public Text checkpointInfoText; 
 
-    [Header("--- Wiki 数据生成 ---")]
-    public Transform wikiContentParent;
-    public GameObject wikiEntryPrefab;
+    [Header("--- Wiki 左侧列表 ---")]
+    public Transform leftListContent;    
+    public GameObject titleButtonPrefab; 
+    
+    [Header("--- Wiki 右侧详情 (无标题) ---")]
+    public TextMeshProUGUI rightDetailBody; 
+    public Image rightDetailImage;           
+    public GameObject rightImageContainer;   
 
     private int currentIndex = 1; 
     private bool isPaused = false;
@@ -39,47 +45,43 @@ public class PauseMenuMaster : MonoBehaviour
     {
         pauseMenuRoot.SetActive(false);
         
-        // 1. 继续游戏：直接调用 TogglePause 即可，因为它就是负责开关界面的
-        if (btnResume != null)
-        {
-            btnResume.onClick.AddListener(TogglePause);
-        }
-
-        // 2. 退出游戏：必须先恢复时间，再跳转场景
+        if (btnResume != null) btnResume.onClick.AddListener(TogglePause);
+        
         if (btnQuit != null)
         {
             btnQuit.onClick.AddListener(() => 
             {
-                Time.timeScale = 1f; // ⚠️ 极其重要！如果不写这句，回到主菜单游戏依然是暂停的
-                SceneManager.LoadScene("IntroMenu"); // 确保你的主菜单场景名字真的是 "IntroMenu"
+                Time.timeScale = 1f; 
+                SceneManager.LoadScene("IntroMenu"); 
             });
         }
 
-        // --- 存档按钮绑定 ---
-        btnPrev.onClick.AddListener(() => {
-            int target = GameManager.Instance.CurrentIndex - 1;
-            GameManager.Instance.LoadCheckpoint(target);
-            RefreshCheckpointUI(); 
+        // 绑定存档按钮
+        if (btnPrev != null) btnPrev.onClick.AddListener(() => {
+            if (GameManager.Instance != null) {
+                GameManager.Instance.LoadCheckpoint(GameManager.Instance.CurrentIndex - 1);
+                RefreshCheckpointUI(); 
+            }
         });
 
-        btnNext.onClick.AddListener(() => {
-            int target = GameManager.Instance.CurrentIndex + 1;
-            GameManager.Instance.LoadCheckpoint(target);
-            RefreshCheckpointUI();
+        if (btnNext != null) btnNext.onClick.AddListener(() => {
+            if (GameManager.Instance != null) {
+                GameManager.Instance.LoadCheckpoint(GameManager.Instance.CurrentIndex + 1);
+                RefreshCheckpointUI();
+            }
         });
 
-        btnReload.onClick.AddListener(() => {
-            GameManager.Instance.LoadCheckpoint(GameManager.Instance.CurrentIndex);
-            TogglePause(); 
+        if (btnReload != null) btnReload.onClick.AddListener(() => {
+            if (GameManager.Instance != null) {
+                GameManager.Instance.LoadCheckpoint(GameManager.Instance.CurrentIndex);
+                TogglePause(); 
+            }
         });
     }
     
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            TogglePause();
-        }
+        if (Input.GetKeyDown(KeyCode.Escape)) TogglePause();
 
         if (isPaused)
         {
@@ -92,15 +94,10 @@ public class PauseMenuMaster : MonoBehaviour
     {
         isPaused = !isPaused;
         pauseMenuRoot.SetActive(isPaused);
-        
         Time.timeScale = isPaused ? 0f : 1f;
         Cursor.lockState = isPaused ? CursorLockMode.None : CursorLockMode.Locked;
         Cursor.visible = isPaused;
-
-        if (isPaused)
-        {
-            UpdateUI(); 
-        }
+        if (isPaused) UpdateUI(); 
     }
     
     public void OnTabClicked(int index) { SwitchTab(index); }
@@ -116,19 +113,23 @@ public class PauseMenuMaster : MonoBehaviour
     void UpdateUI()
     {
         for (int i = 0; i < topButtonImages.Length; i++)
-            topButtonImages[i].color = (i == currentIndex) ? activeColor : inactiveColor;
+        {
+            if (topButtonImages[i] != null)
+                topButtonImages[i].color = (i == currentIndex) ? activeColor : inactiveColor;
+        }
 
-        settingsPanel.SetActive(currentIndex == 0);
-        checkpointPanel.SetActive(currentIndex == 1);
+        if (settingsPanel != null) settingsPanel.SetActive(currentIndex == 0);
+        if (checkpointPanel != null) checkpointPanel.SetActive(currentIndex == 1);
+        
         bool isWikiMode = (currentIndex >= 2 && currentIndex <= 4);
-        wikiSharedPanel.SetActive(isWikiMode);
+        if (wikiSharedPanel != null) wikiSharedPanel.SetActive(isWikiMode);
 
         if (currentIndex == 1) RefreshCheckpointUI();
         else if (isWikiMode)
         {
-            if (currentIndex == 2) RefreshWiki(WikiEntryData.Category.Research);
-            else if (currentIndex == 3) RefreshWiki(WikiEntryData.Category.Archive);
-            else if (currentIndex == 4) RefreshWiki(WikiEntryData.Category.Event);
+            if (currentIndex == 2) RefreshWikiList(WikiEntryData.Category.Research);
+            else if (currentIndex == 3) RefreshWikiList(WikiEntryData.Category.Archive);
+            else if (currentIndex == 4) RefreshWikiList(WikiEntryData.Category.Event);
         }
     }
 
@@ -137,20 +138,63 @@ public class PauseMenuMaster : MonoBehaviour
         if (GameManager.Instance == null) return;
         int current = GameManager.Instance.CurrentIndex;
         int max = GameManager.Instance.MaxIndex;
-        btnPrev.interactable = (current > 0);
-        btnNext.interactable = (current < max);
+        if (btnPrev != null) btnPrev.interactable = (current > 0);
+        if (btnNext != null) btnNext.interactable = (current < max);
         if (checkpointInfoText != null)
             checkpointInfoText.text = (current == 0) ? "Location: Start Point" : $"Checkpoint: {current} / {max}";
     }
 
-    void RefreshWiki(WikiEntryData.Category category)
+    void RefreshWikiList(WikiEntryData.Category category)
     {
-        foreach (Transform child in wikiContentParent) Destroy(child.gameObject);
+        foreach (Transform child in leftListContent) Destroy(child.gameObject);
+
+        if (WikiManager.Instance == null) return;
         var entries = WikiManager.Instance.GetUnlockedEntriesByCategory(category);
+
+        if (entries.Count == 0)
+        {
+            ClearRightPanel();
+            return;
+        }
+
         foreach (var entry in entries)
         {
-            GameObject obj = Instantiate(wikiEntryPrefab, wikiContentParent);
-            obj.GetComponent<WikiUIItem>().Setup(entry.title, entry.description);
+            GameObject btnObj = Instantiate(titleButtonPrefab, leftListContent);
+            WikiTitleButton btnScript = btnObj.GetComponent<WikiTitleButton>();
+            if (btnScript != null)
+            {
+                btnScript.Setup(entry, OnWikiTitleClicked);
+            }
         }
+        OnWikiTitleClicked(entries[0]);
+    }
+
+    // --- 点击处理：更新图片和正文 ---
+    void OnWikiTitleClicked(WikiEntryData data)
+    {
+        // 只更新正文
+        if (rightDetailBody != null) rightDetailBody.text = data.description;
+
+        // 更新图片
+        if (rightImageContainer != null && rightDetailImage != null)
+        {
+            if (data.entryImage != null)
+            {
+                rightImageContainer.SetActive(true);
+                rightDetailImage.sprite = data.entryImage;
+                rightDetailImage.preserveAspect = true;
+            }
+            else
+            {
+                rightImageContainer.SetActive(false); 
+            }
+        }
+    }
+
+    void ClearRightPanel()
+    {
+        // 移除标题清空逻辑
+        if (rightDetailBody != null) rightDetailBody.text = "暂无数据";
+        if (rightImageContainer != null) rightImageContainer.SetActive(false);
     }
 }
