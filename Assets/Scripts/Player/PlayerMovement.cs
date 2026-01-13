@@ -38,18 +38,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     void Update()
-    {
-        // 1. 获取 PuzzleCharacter 组件
-        var puzzleState = GetComponent<PuzzleCharacter>();
-
-        // 2. 如果组件存在，且 isControlled 为 false，则禁止输入/移动
-        if (puzzleState != null && !puzzleState.isControlled)
-        {
-            // 这里可以选择是否要保留重力 (如果你希望被困住时还能掉落地面，保留重力逻辑)
-            // 或者直接 return 不做任何处理
-            return;
-        }
-        
+    {        
         // 1. 获取输入
         horizontalInput = Input.GetAxis("Horizontal");
 

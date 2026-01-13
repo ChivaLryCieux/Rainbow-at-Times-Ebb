@@ -30,7 +30,7 @@ public class FallingPlatform : MonoBehaviour
         if (isTriggered) return;
 
         // CharacterController 必定带有 Collider，所以这里能检测到
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") || other.CompareTag("PhantomPlayer"))
         {
             StartCoroutine(FallRoutine());
         }

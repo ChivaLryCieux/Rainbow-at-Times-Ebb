@@ -17,7 +17,8 @@ public class MoveSwitch : MonoBehaviour
     public float activeDuration = 3.0f;
 
     [Header("触发设置")]
-    public string triggerTag = "Player";
+    public string triggerTag1 = "Player";
+    public string triggerTag2 = "PhantomPlayer";
 
     [Header("开关自身视觉")]
     public float buttonPressDepth = 0.1f;
@@ -81,7 +82,7 @@ public class MoveSwitch : MonoBehaviour
     {
         if (_isLocked) return;
 
-        if (other.CompareTag(triggerTag))
+        if (other.CompareTag(triggerTag1) || other.CompareTag(triggerTag2))
         {
             ActivateDevice();
         }
@@ -100,8 +101,6 @@ public class MoveSwitch : MonoBehaviour
             _deviceCurrentTarget = _deviceEndPos;
         }
 
-        Debug.Log($"<color=green>开关触发：装置正在移向生效位置，保持 {activeDuration} 秒</color>");
-
         // 3. 开始倒计时复位
         Invoke("ResetSwitch", activeDuration);
     }
@@ -117,7 +116,6 @@ public class MoveSwitch : MonoBehaviour
             _deviceCurrentTarget = _deviceStartPos;
         }
 
-        Debug.Log("<color=orange>时间到：装置正在缩回</color>");
         _isLocked = false;
     }
 

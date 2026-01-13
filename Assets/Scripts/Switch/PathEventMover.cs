@@ -53,7 +53,6 @@ public class PathEventMover : MonoBehaviour
             // 限制最大速度
             if (currentSpeed > maxSpeed) currentSpeed = maxSpeed;
             
-            Debug.Log($"到达路点！自动加速至: {currentSpeed}");
         }
     }
 
@@ -78,7 +77,6 @@ public class PathEventMover : MonoBehaviour
         // 限制最低速度
         if (currentSpeed < minSpeed) currentSpeed = minSpeed;
         
-        Debug.Log($"玩家触发开关！速度降低至: {currentSpeed}");
     }
     
     // 切换方向 (可选保留)

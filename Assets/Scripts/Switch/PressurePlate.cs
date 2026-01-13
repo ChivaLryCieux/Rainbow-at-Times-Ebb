@@ -85,6 +85,7 @@ public class PressurePlate : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+
         // --- 过滤逻辑 ---
         if (!other.CompareTag(allowedTag)) return;
         // ---------------
@@ -126,12 +127,22 @@ public class PressurePlate : MonoBehaviour
         if (isOpen)
         {
             _targetVisualPos = _downPos;
-            if (targetDoor != null) targetDoor.SetDoorState(true);
+            if (targetDoor != null)
+            {
+                targetDoor.SetDoorState(true);
+            }
+            else
+            {
+                Debug.LogError("严重错误：Target Door 没有赋值！请把门拖给开关！");
+            }
         }
         else
         {
             _targetVisualPos = _upPos;
-            if (targetDoor != null) targetDoor.SetDoorState(false);
+            if (targetDoor != null)
+            {
+                targetDoor.SetDoorState(false);
+            }
         }
     }
 }
