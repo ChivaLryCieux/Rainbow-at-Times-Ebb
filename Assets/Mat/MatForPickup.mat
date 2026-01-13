@@ -171,7 +171,7 @@ Material:
     - _EnableGeometricSpecularAA: 0
     - _EnergyConservingSpecularColor: 1
     - _FlowSpeed: 2
-    - _GlowStrength: 1.62
+    - _GlowStrength: 12.4
     - _HeightAmplitude: 0.02
     - _HeightCenter: 0.5
     - _HeightMapParametrization: 0
@@ -255,7 +255,7 @@ Material:
     - _EmissiveColorLDR: {r: 0, g: 0, b: 0, a: 1}
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
-    - _MainColor: {r: 1, g: 0.19311854, b: 0, a: 1}
+    - _MainColor: {r: 1, g: 0.03722991, b: 0, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _ThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _TransmittanceColor: {r: 1, g: 1, b: 1, a: 1}
