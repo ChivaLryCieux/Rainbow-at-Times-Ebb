@@ -66,13 +66,13 @@ Material:
     - _EnableFogOnTransparent: 0
     - _ExcludeFromTUAndAA: 0
     - _NoiseContrast: 0.0869
-    - _NoiseScale: 3.03
-    - _NoiseSpeed: 0.48
+    - _NoiseScale: 10
+    - _NoiseSpeed: 1
     - _OpaqueCullMode: 2
     - _RenderQueueType: 4
     - _Ripple: 1
     - _RippleConstract: 0.08
-    - _RippleCount: 2.5
+    - _RippleCount: 20.5
     - _RippleSpeed: 2
     - _SrcBlend: 1
     - _StencilRef: 0
