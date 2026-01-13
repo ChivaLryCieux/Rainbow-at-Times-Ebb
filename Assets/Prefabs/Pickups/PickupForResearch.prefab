@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 7683565621879478978}
   - component: {fileID: 2146247102554855256}
   - component: {fileID: 3830495463455947449}
+  - component: {fileID: 8674230675129832144}
   m_Layer: 0
-  m_Name: Pickup
+  m_Name: PickupForResearch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -84,6 +85,24 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &8674230675129832144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 971524629830417810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73f754eba2b4ef346bcb0bcaef5d05e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  floatStrength: 0.3
+  floatSpeed: 1
+  addHorizontalFloat: 1
+  horizontalStrength: 0.3
+  rotate: 1
+  rotationSpeed: 15.7
 --- !u!1 &1195505275100108907
 GameObject:
   m_ObjectHideFlags: 0

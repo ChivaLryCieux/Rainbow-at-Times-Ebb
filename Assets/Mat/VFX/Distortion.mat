@@ -83,13 +83,13 @@ Material:
     - _ExcludeFromTUAndAA: 0
     - _NoiseContrast: 0.04
     - _NoiseScale: 0.49
-    - _NoiseSpeed: 0.048
+    - _NoiseSpeed: 0.14
     - _OpaqueCullMode: 2
     - _RenderQueueType: 4
-    - _Ripple: 0
-    - _RippleConstract: 1
-    - _RippleCount: 10
-    - _RippleSpeed: 0.5
+    - _Ripple: 1
+    - _RippleConstract: 1.13
+    - _RippleCount: 1
+    - _RippleSpeed: 2
     - _SrcBlend: 1
     - _StencilRef: 0
     - _StencilRefDepth: 1
@@ -114,5 +114,5 @@ Material:
     m_Colors:
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _RippleCenter: {r: 0, g: 0, b: 0, a: 0}
+    - _RippleCenter: {r: 0.99, g: -55.9, b: 0, a: 0}
   m_BuildTextureStacks: []
