@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: R1
   title: R1
-  description: R1R1
-  entryImage: {fileID: 21300000, guid: 66cda031f9e168d41b4365e67ef33842, type: 3}
+  description: R1
   category: 0
+  primaryImage: {fileID: 21300000, guid: 5609cd5230e799149a9751a81c555289, type: 3}
+  secondaryImage: {fileID: 21300000, guid: 5609cd5230e799149a9751a81c555289, type: 3}
+  wikiVideo: {fileID: 0}
