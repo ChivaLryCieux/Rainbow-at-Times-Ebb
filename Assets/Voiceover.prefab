@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4114234243518196449
+--- !u!1 &2518633338511755489
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,12 +8,12 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 107852106439223251}
-  - component: {fileID: 2333901670262388923}
-  - component: {fileID: 7241332689653541396}
-  - component: {fileID: 3899622807836341200}
-  - component: {fileID: 5511300786788235468}
-  - component: {fileID: 5331271439891089404}
+  - component: {fileID: 923167882175267183}
+  - component: {fileID: 615017267590192898}
+  - component: {fileID: 3985327505798170111}
+  - component: {fileID: 1666819432659545944}
+  - component: {fileID: 2179111298790797931}
+  - component: {fileID: 5771347974165487122}
   m_Layer: 0
   m_Name: Voiceover
   m_TagString: Untagged
@@ -21,36 +21,36 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &107852106439223251
+--- !u!4 &923167882175267183
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4114234243518196449}
+  m_GameObject: {fileID: 2518633338511755489}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.85, y: 1.4904348, z: 0}
+  m_LocalPosition: {x: 14.93, y: 1.4904348, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &2333901670262388923
+--- !u!33 &615017267590192898
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4114234243518196449}
+  m_GameObject: {fileID: 2518633338511755489}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &7241332689653541396
+--- !u!114 &3985327505798170111
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4114234243518196449}
+  m_GameObject: {fileID: 2518633338511755489}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cdeb486056c28fa459290f8f7197b647, type: 3}
@@ -58,16 +58,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerTag: Player
   subtitleTextComponent: {fileID: 0}
-  myAudioClip: {fileID: 8300000, guid: 50c08818eb4467244bdf27464f571dce, type: 3}
-  mySubtitleContent: 12345
+  myAudioClip: {fileID: 8300000, guid: c0718bce7826ff84d8b181553ce8b7e0, type: 3}
+  mySubtitleContent: "\u770B\u8D77\u6765\u4E0D\u592A\u5BF9\u554A"
   duration: 3
---- !u!82 &3899622807836341200
+--- !u!82 &1666819432659545944
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4114234243518196449}
+  m_GameObject: {fileID: 2518633338511755489}
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
@@ -157,13 +157,13 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!23 &5511300786788235468
+--- !u!23 &2179111298790797931
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4114234243518196449}
+  m_GameObject: {fileID: 2518633338511755489}
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -199,13 +199,13 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &5331271439891089404
+--- !u!65 &5771347974165487122
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4114234243518196449}
+  m_GameObject: {fileID: 2518633338511755489}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2

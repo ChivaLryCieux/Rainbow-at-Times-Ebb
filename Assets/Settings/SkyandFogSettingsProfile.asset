@@ -158,7 +158,7 @@ MonoBehaviour:
     m_Value: 0
   color:
     m_OverrideState: 1
-    m_Value: {r: 0.082282715, g: 0.082282715, b: 0.082282715, a: 1}
+    m_Value: {r: 0.014443844, g: 0.014443844, b: 0.014443844, a: 1}
   tint:
     m_OverrideState: 0
     m_Value: {r: 1, g: 1, b: 1, a: 1}
