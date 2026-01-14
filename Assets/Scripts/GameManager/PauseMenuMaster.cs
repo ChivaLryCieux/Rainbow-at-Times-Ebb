@@ -14,9 +14,7 @@ public class PauseMenuMaster : MonoBehaviour
     public Button btnQuit;   
 
     [Header("--- 顶部导航栏 ---")]
-    public Image[] topButtonImages; 
-    public Color activeColor = Color.white;
-    public Color inactiveColor = new Color(0.5f, 0.5f, 0.5f, 1f);
+    public TopTabButton[] topTabs; // 现在应该只剩 4 个元素了
 
     [Header("--- 内容面板 ---")]
     public GameObject settingsPanel;   
@@ -33,7 +31,7 @@ public class PauseMenuMaster : MonoBehaviour
     public Transform leftListContent;    
     public GameObject titleButtonPrefab; 
     
-    [Header("--- Wiki 右侧详情 (无标题) ---")]
+    [Header("--- Wiki 右侧详情 ---")]
     public TextMeshProUGUI rightDetailBody; 
     public Image rightDetailImage;           
     public GameObject rightImageContainer;   
@@ -44,19 +42,12 @@ public class PauseMenuMaster : MonoBehaviour
     void Start()
     {
         pauseMenuRoot.SetActive(false);
-        
         if (btnResume != null) btnResume.onClick.AddListener(TogglePause);
-        
-        if (btnQuit != null)
-        {
-            btnQuit.onClick.AddListener(() => 
-            {
-                Time.timeScale = 1f; 
-                SceneManager.LoadScene("IntroMenu"); 
-            });
-        }
+        if (btnQuit != null) btnQuit.onClick.AddListener(() => {
+            Time.timeScale = 1f; 
+            SceneManager.LoadScene("IntroMenu"); 
+        });
 
-        // 绑定存档按钮
         if (btnPrev != null) btnPrev.onClick.AddListener(() => {
             if (GameManager.Instance != null) {
                 GameManager.Instance.LoadCheckpoint(GameManager.Instance.CurrentIndex - 1);
@@ -105,31 +96,37 @@ public class PauseMenuMaster : MonoBehaviour
     private void SwitchTab(int targetIndex)
     {
         currentIndex = targetIndex;
-        if (currentIndex > 4) currentIndex = 0;
-        if (currentIndex < 0) currentIndex = 4;
+        // 1. 修改循环逻辑：上限从 4 变成 3
+        if (currentIndex > 3) currentIndex = 0; 
+        if (currentIndex < 0) currentIndex = 3;
         UpdateUI();
     }
 
     void UpdateUI()
     {
-        for (int i = 0; i < topButtonImages.Length; i++)
+        // 更新顶部按钮状态
+        if (topTabs != null)
         {
-            if (topButtonImages[i] != null)
-                topButtonImages[i].color = (i == currentIndex) ? activeColor : inactiveColor;
+            for (int i = 0; i < topTabs.Length; i++)
+            {
+                if (topTabs[i] != null)
+                    topTabs[i].SetSelected(i == currentIndex);
+            }
         }
 
         if (settingsPanel != null) settingsPanel.SetActive(currentIndex == 0);
         if (checkpointPanel != null) checkpointPanel.SetActive(currentIndex == 1);
         
-        bool isWikiMode = (currentIndex >= 2 && currentIndex <= 4);
+        // 2. 修改 Wiki 模式判断：索引范围现在是 2 到 3
+        bool isWikiMode = (currentIndex >= 2 && currentIndex <= 3);
         if (wikiSharedPanel != null) wikiSharedPanel.SetActive(isWikiMode);
 
         if (currentIndex == 1) RefreshCheckpointUI();
         else if (isWikiMode)
         {
             if (currentIndex == 2) RefreshWikiList(WikiEntryData.Category.Research);
-            else if (currentIndex == 3) RefreshWikiList(WikiEntryData.Category.Archive);
-            else if (currentIndex == 4) RefreshWikiList(WikiEntryData.Category.Event);
+            // 3. 移除 Archive，并将 Event 的索引从 4 改为 3
+            else if (currentIndex == 3) RefreshWikiList(WikiEntryData.Category.Event);
         }
     }
 
@@ -147,7 +144,6 @@ public class PauseMenuMaster : MonoBehaviour
     void RefreshWikiList(WikiEntryData.Category category)
     {
         foreach (Transform child in leftListContent) Destroy(child.gameObject);
-
         if (WikiManager.Instance == null) return;
         var entries = WikiManager.Instance.GetUnlockedEntriesByCategory(category);
 
@@ -161,21 +157,14 @@ public class PauseMenuMaster : MonoBehaviour
         {
             GameObject btnObj = Instantiate(titleButtonPrefab, leftListContent);
             WikiTitleButton btnScript = btnObj.GetComponent<WikiTitleButton>();
-            if (btnScript != null)
-            {
-                btnScript.Setup(entry, OnWikiTitleClicked);
-            }
+            if (btnScript != null) btnScript.Setup(entry, OnWikiTitleClicked);
         }
         OnWikiTitleClicked(entries[0]);
     }
 
-    // --- 点击处理：更新图片和正文 ---
     void OnWikiTitleClicked(WikiEntryData data)
     {
-        // 只更新正文
         if (rightDetailBody != null) rightDetailBody.text = data.description;
-
-        // 更新图片
         if (rightImageContainer != null && rightDetailImage != null)
         {
             if (data.entryImage != null)
@@ -184,16 +173,12 @@ public class PauseMenuMaster : MonoBehaviour
                 rightDetailImage.sprite = data.entryImage;
                 rightDetailImage.preserveAspect = true;
             }
-            else
-            {
-                rightImageContainer.SetActive(false); 
-            }
+            else rightImageContainer.SetActive(false); 
         }
     }
 
     void ClearRightPanel()
     {
-        // 移除标题清空逻辑
         if (rightDetailBody != null) rightDetailBody.text = "暂无数据";
         if (rightImageContainer != null) rightImageContainer.SetActive(false);
     }
