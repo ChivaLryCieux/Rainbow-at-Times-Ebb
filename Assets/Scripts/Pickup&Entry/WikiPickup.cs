@@ -14,7 +14,7 @@ public class WikiPickup : MonoBehaviour
             // 字幕显示
             if (GameNotificationUI.Instance != null)
             {
-                GameNotificationUI.Instance.Show($"拾取了编号：{entryIDToUnlock}");
+                GameNotificationUI.Instance.Show($"已读取信息：{entryIDToUnlock} \r\n按下Esc进入研究界面阅读");
             }
 
             // 可以在这里播放音效或特效

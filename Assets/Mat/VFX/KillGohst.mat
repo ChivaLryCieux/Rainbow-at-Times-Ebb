@@ -81,13 +81,13 @@ Material:
     - _EnableBlendModePreserveSpecularLighting: 0
     - _EnableFogOnTransparent: 0
     - _ExcludeFromTUAndAA: 0
-    - _NoiseContrast: 0.04
-    - _NoiseScale: 2.26
+    - _NoiseContrast: 0.1
+    - _NoiseScale: 3.45
     - _NoiseSpeed: 0.591
     - _OpaqueCullMode: 2
     - _RenderQueueType: 4
     - _Ripple: 1
-    - _RippleConstract: 1
+    - _RippleConstract: 5
     - _RippleCount: 2.2
     - _RippleSpeed: 0.5
     - _SrcBlend: 1

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1fc287b274c3b540ae359dc9bb7f6f4, type: 3}
   m_Name: R 10
   m_EditorClassIdentifier: 
-  id: R10
-  title: R10
+  id: "\u7814\u7A76\u7F16\u53F710\uFF1A\u8BA9\u592A\u9633\u71C3\u70E7\u7684\u706B\u7130"
+  title: "\u7814\u7A76\u7F16\u53F710"
   description: 
   category: 0
   primaryImage: {fileID: 21300000, guid: b8acfa27d212eec42a9ba2b3b2d91fc0, type: 3}
