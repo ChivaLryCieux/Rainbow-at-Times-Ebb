@@ -5,10 +5,10 @@ public class WikiManager : MonoBehaviour
 {
     public static WikiManager Instance;
 
-    // 存储已解锁的词条ID (使用HashSet防止重复，且查找快)
+    // 存储已解锁的词条ID
     private HashSet<string> unlockedEntryIDs = new HashSet<string>();
 
-    // 所有的词条数据引用 (需要在Inspector里把所有做好的ScriptableObject拖进去)
+    // 所有的词条数据引用
     public List<WikiEntryData> allEntries; 
 
     private void Awake()
@@ -16,18 +16,28 @@ public class WikiManager : MonoBehaviour
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
         
-        DontDestroyOnLoad(gameObject); // 切换场景时不销毁
+        DontDestroyOnLoad(gameObject); 
+    }
+    
+    public bool UnlockEntry(string entryID)
+    {
+        // 如果是新ID，Add返回true；如果是旧ID，Add返回false
+        if (unlockedEntryIDs.Add(entryID))
+        {
+            Debug.Log($"词条 {entryID} 首次解锁！");
+            return true; 
+        }
+        return false;
     }
 
-    // 解锁一个词条
-    public void UnlockEntry(string entryID)
+    // 根据ID查找数据对象
+    public WikiEntryData GetEntryByID(string id)
     {
-        if (!unlockedEntryIDs.Contains(entryID))
+        foreach (var entry in allEntries)
         {
-            unlockedEntryIDs.Add(entryID);
-            Debug.Log($"词条 {entryID} 已解锁！");
-            // 这里可以加一个UI弹窗提示 "获得新档案"
+            if (entry.id == id) return entry;
         }
+        return null;
     }
 
     // 检查是否解锁

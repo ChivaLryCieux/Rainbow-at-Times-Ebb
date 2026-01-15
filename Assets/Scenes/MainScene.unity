@@ -9423,10 +9423,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1250082403}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1920, y: 1080}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0.000030517578}
+  m_SizeDelta: {x: 1820, y: 880}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!328 &545805873
 VideoPlayer:
@@ -12131,6 +12131,8 @@ MonoBehaviour:
   - {fileID: 2083568582}
   - {fileID: 2085260464}
   - {fileID: 889905456}
+  pickupSubtitleObj: {fileID: 1227506670}
+  voiceoverSubtitleObj: {fileID: 286046732}
   settingsPanel: {fileID: 46214750}
   checkpointPanel: {fileID: 1844760460}
   wikiSharedPanel: {fileID: 308561987}
