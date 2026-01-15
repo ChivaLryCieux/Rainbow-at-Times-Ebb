@@ -14,8 +14,7 @@ GameObject:
   - component: {fileID: 8674230675129832144}
   - component: {fileID: 6931945559275161842}
   - component: {fileID: 7300154224592931865}
-  - component: {fileID: 3911660581211902763}
-  - component: {fileID: 2833066114468300184}
+  - component: {fileID: 4688862487595297851}
   m_Layer: 0
   m_Name: PickupResearch
   m_TagString: Untagged
@@ -142,7 +141,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.018585425, y: 0.018593613, z: 0.0013514854}
   m_Center: {x: 0.00083247107, y: 0.0067869835, z: 0.00055779034}
---- !u!82 &3911660581211902763
+--- !u!82 &4688862487595297851
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -152,18 +151,18 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: d7e3de15a7d4f924e94058bb68d38d38, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 54f9bda6744083a45a0291b0c7222398, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
+  MinDistance: 0.1
+  MaxDistance: 5
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -198,7 +197,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -238,22 +237,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &2833066114468300184
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 971524629830417810}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c939cc1f77c6bcf4dbb4d2a2cd3bae02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  audioToPlay: {fileID: 0}
-  playOnce: 1
-  targetTag: Player
-  volume: 1
 --- !u!1 &1195505275100108907
 GameObject:
   m_ObjectHideFlags: 0
