@@ -4134,7 +4134,7 @@ GameObject:
   - component: {fileID: 286046733}
   - component: {fileID: 286046734}
   m_Layer: 5
-  m_Name: Subtitle (1)
+  m_Name: VoiceoverSubtitle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4154,7 +4154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -20629,7 +20629,7 @@ GameObject:
   - component: {fileID: 1227506673}
   - component: {fileID: 1227506672}
   m_Layer: 5
-  m_Name: Subtitle
+  m_Name: PickupSubtitle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26394,6 +26394,37 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 3724821731294770800, guid: b1fc6952ac3688641a2546be48c37ed0, type: 3}
+--- !u!1 &1603768621
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1603768622}
+  m_Layer: 0
+  m_Name: ====OTHERS====
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1603768622
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1603768621}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 852.0678, y: 387.79535, z: 24.065872}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1608507948
 GameObject:
   m_ObjectHideFlags: 0
@@ -51579,6 +51610,7 @@ SceneRoots:
   - {fileID: 1981062254}
   - {fileID: 54188079}
   - {fileID: 1211990316}
+  - {fileID: 1603768622}
   - {fileID: 755564626}
   - {fileID: 677469919}
   - {fileID: 374742395}
