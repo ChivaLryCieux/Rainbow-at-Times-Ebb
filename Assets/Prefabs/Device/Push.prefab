@@ -360,6 +360,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioToPlay: {fileID: 8300000, guid: 4cf64060a4709eb42985b98c02e83ab5, type: 3}
-  playOnce: 1
+  playOnce: 0
   targetTag: Player
   volume: 1
