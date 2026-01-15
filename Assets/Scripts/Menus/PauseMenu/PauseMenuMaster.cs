@@ -1,20 +1,22 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement; 
+using UnityEngine.SceneManagement; // 必须引用，用于重载场景
 using TMPro; 
 using UnityEngine.Video; 
 
 public class PauseMenuMaster : MonoBehaviour
 {
-    public static PauseMenuMaster Instance; // 单例
+    public static PauseMenuMaster Instance;
 
     [Header("--- 核心 UI ---")]
     public GameObject pauseMenuRoot; 
     public TopTabButton[] topTabs; 
-    
+
+    // =========== HUD 引用 (暂停时隐藏) ===========
     [Header("--- HUD (暂停时隐藏) ---")]
     public GameObject pickupSubtitleObj;    // 请拖入 PickupSubtitle
     public GameObject voiceoverSubtitleObj; // 请拖入 VoiceoverSubtitle
+    // ==========================================
     
     [Header("--- 面板引用 ---")]
     public GameObject settingsPanel;   
@@ -26,7 +28,7 @@ public class PauseMenuMaster : MonoBehaviour
     public Button btnQuit;
     public Button btnPrev;      
     public Button btnNext;      
-    public Button btnReload;    
+    public Button btnReload;    // 这里将作为“重新开始/回到标题”按钮
     public Text checkpointInfoText; 
 
     [Header("--- Wiki 左侧列表 ---")]
@@ -50,11 +52,18 @@ public class PauseMenuMaster : MonoBehaviour
 
     private int currentIndex = 1; 
     private bool isPaused = false;
+    
+    // 【新增】用来标记是否允许暂停（默认为false，等BeginGameController通知变为true）
+    private bool canPause = false; 
+
     private VideoClip currentVideoClip; 
 
     void Awake() 
     {
         if (Instance == null) Instance = this;
+        
+        // 游戏刚运行时不允许暂停（防止在开场动画时按ESC）
+        canPause = false;
     }
 
     void Start()
@@ -62,23 +71,47 @@ public class PauseMenuMaster : MonoBehaviour
         pauseMenuRoot.SetActive(false);
         if (videoOverlayRoot != null) videoOverlayRoot.SetActive(false); 
 
-        // 按键绑定
+        // --- 按钮绑定 ---
+        
+        // 1. 继续游戏
         if (btnResume != null) btnResume.onClick.AddListener(TogglePause);
+        
+        // 2. 退出游戏 (完全退出程序)
         if (btnQuit != null) btnQuit.onClick.AddListener(() => {
-            Time.timeScale = 1f; 
-            SceneManager.LoadScene("IntroMenu"); 
+            #if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+            #else
+                Application.Quit();
+            #endif
         });
 
+        // 3. 重新开始 / 重载 (实现“一切还原并回到BeginCanvas”)
+        if (btnReload != null) btnReload.onClick.AddListener(() => {
+            // 恢复时间流速，否则重载后的场景一开始就是暂停的
+            Time.timeScale = 1f; 
+            // 重载当前活动的场景 -> 这会重置所有脚本、变量，BeginCanvas 也会重新出现
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        });
+
+        // 4. 视频相关
         if (eventPlayButton != null) 
             eventPlayButton.onClick.AddListener(OnPlayButtonClicked);
         
         if (closeVideoButton != null) 
             closeVideoButton.onClick.AddListener(CloseVideoOverlay);
         
+        // 5. 存档相关按钮
         SetupCheckpointButtons();
     }
     
-    // --- 外部调用接口 ---
+    // --- 外部调用：设置游戏是否正式开始 ---
+    // 由 BeginGameController 在动画播放完毕后调用 SetGameStarted(true)
+    public void SetGameStarted(bool state)
+    {
+        canPause = state;
+    }
+
+    // --- 外部调用：强制打开菜单并播放视频 ---
     public void OpenAndPlayVideo(string entryID)
     {
         // 1. 强制暂停并打开菜单
@@ -102,14 +135,18 @@ public class PauseMenuMaster : MonoBehaviour
         }
     }
 
+    // --- 核心暂停逻辑 ---
     public void TogglePause()
     {
+        // 如果不允许暂停（比如还在开场动画），直接无视
+        if (!canPause && !isPaused) return;
+
         isPaused = !isPaused;
         
         // 1. 控制菜单显隐
         pauseMenuRoot.SetActive(isPaused);
         
-        // 2. 【核心修改】控制 HUD 字幕显隐 (暂停时隐藏，游戏时显示)
+        // 2. 控制 HUD 字幕显隐 (暂停时隐藏，游戏时显示)
         if (pickupSubtitleObj != null) pickupSubtitleObj.SetActive(!isPaused);
         if (voiceoverSubtitleObj != null) voiceoverSubtitleObj.SetActive(!isPaused);
 
@@ -124,10 +161,11 @@ public class PauseMenuMaster : MonoBehaviour
         if (isPaused) UpdateUI(); 
     }
 
-    // --- 以下逻辑保持原样 ---
-
     void Update()
     {
+        // 如果不允许暂停，且当前没处于暂停状态，就不检测 ESC
+        if (!canPause && !isPaused) return;
+
         if (Input.GetKeyDown(KeyCode.Escape)) 
         {
             if (videoOverlayRoot != null && videoOverlayRoot.activeSelf) 
@@ -156,12 +194,7 @@ public class PauseMenuMaster : MonoBehaviour
                 RefreshCheckpointUI();
             }
         });
-        if (btnReload != null) btnReload.onClick.AddListener(() => {
-            if (GameManager.Instance != null) {
-                GameManager.Instance.LoadCheckpoint(GameManager.Instance.CurrentIndex);
-                TogglePause(); 
-            }
-        });
+        // btnReload 的逻辑已经移到 Start 里面单独处理了，为了实现重载场景
     }
 
     public void OnTabClicked(int index) { SwitchTab(index); }
