@@ -64,3 +64,4 @@ UserSettings/
 *.csproj
 *.user
 *.userprefs
+*.vsconfig
