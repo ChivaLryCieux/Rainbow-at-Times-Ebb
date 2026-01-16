@@ -110,19 +110,21 @@ public class GameManager : MonoBehaviour
 
     public Vector3? GetNextCheckpointPosition()
     {
+        sceneCheckpoints.RemoveAll(cp => cp == null);
+
         // 我们要找 ID 比当前 CurrentIndex 大的第一个点
-        // 比如 CurrentIndex 是 0 (出生点)，我们要找 ID 为 1 的点
         int targetID = MaxIndex + 1;
 
         foreach (var cp in sceneCheckpoints)
         {
-            if (cp.checkpointID == targetID)
+            // 再次确保 cp 不为空再访问
+            if (cp != null && cp.checkpointID == targetID)
             {
                 return cp.transform.position;
             }
         }
 
-        return null; // 如果找不到（通关了），返回空
+        return null;
     }
 
     public void LoadCheckpoint(int index)

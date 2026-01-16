@@ -25,9 +25,10 @@ public class ScreenEdgeGuide : MonoBehaviour
         targetImage = GetComponent<Image>();
         mainCam = Camera.main;
 
-        // 添加 CanvasGroup 组件方便控制淡入淡出
         canvasGroup = GetComponent<CanvasGroup>();
         if (canvasGroup == null) canvasGroup = gameObject.AddComponent<CanvasGroup>();
+
+        canvasGroup.alpha = 0f;
     }
 
     private void Update()
