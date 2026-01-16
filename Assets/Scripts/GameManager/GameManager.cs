@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        PlayerPrefs.DeleteAll(); // 测试清档，请注释掉
+        //PlayerPrefs.DeleteAll(); // 测试清档，请注释掉
         Time.timeScale = 1f;
 
         // 1. 全新游戏初始化
