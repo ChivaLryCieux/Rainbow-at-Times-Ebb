@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class GameManager : MonoBehaviour
     public int CurrentIndex { get; private set; } = 0;
     public int MaxIndex { get; private set; } = 0;
 
+    private List<CheckpointTrigger> sceneCheckpoints = new List<CheckpointTrigger>();
+
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -23,7 +26,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        //PlayerPrefs.DeleteAll(); // 测试清档，请注释掉
+        PlayerPrefs.DeleteAll(); // 测试清档，请注释掉
         Time.timeScale = 1f;
 
         // 1. 全新游戏初始化
@@ -92,6 +95,34 @@ public class GameManager : MonoBehaviour
         SaveMeta(MaxIndex + 1, CurrentIndex);
 
         Debug.Log($"<color=green>新区域解锁！存档点 {newIndex} 已保存</color>");
+    }
+
+    // 让 CheckpointTrigger Start的时候调用这个注册自己
+    public void RegisterCheckpoint(CheckpointTrigger cp)
+    {
+        if (!sceneCheckpoints.Contains(cp))
+        {
+            sceneCheckpoints.Add(cp);
+            // 简单排序，防止注册顺序乱了导致引导错乱
+            sceneCheckpoints.Sort((a, b) => a.checkpointID.CompareTo(b.checkpointID));
+        }
+    }
+
+    public Vector3? GetNextCheckpointPosition()
+    {
+        // 我们要找 ID 比当前 CurrentIndex 大的第一个点
+        // 比如 CurrentIndex 是 0 (出生点)，我们要找 ID 为 1 的点
+        int targetID = MaxIndex + 1;
+
+        foreach (var cp in sceneCheckpoints)
+        {
+            if (cp.checkpointID == targetID)
+            {
+                return cp.transform.position;
+            }
+        }
+
+        return null; // 如果找不到（通关了），返回空
     }
 
     public void LoadCheckpoint(int index)

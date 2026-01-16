@@ -2,20 +2,43 @@ using UnityEngine;
 
 public class CheckpointTrigger : MonoBehaviour
 {
-    // 是否已经触发过（防止玩家重复触发同一个点播放音效等）
-    private bool isActivated = false;
+    [Header("设置")]
+    public int checkpointID; // 【重要】请在编辑器里手动填 1, 2, 3... (出生点不用挂这个脚本)
+
+    [Header("视觉效果")]
+    public Light glowLight; // 拖入子物体的 Point Light
+    public bool isActivated = false;
+
+    private void Start()
+    {
+        // 1. 向 GameManager 注册自己，方便引导光束找到我
+        GameManager.Instance.RegisterCheckpoint(this);
+
+        // 2. 如果玩家已经存档过这个点（比如读档回来），直接关灯
+        if (GameManager.Instance.MaxIndex >= checkpointID)
+        {
+            DisableGlow();
+            isActivated = true;
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        // 只有玩家才能触发
         if (other.CompareTag("Player") && !isActivated)
         {
             isActivated = true;
+            DisableGlow(); // 关灯
 
-            // 调用管理器的保存方法，传入当前存档点的位置
+            // 调用 GameManager 保存
             GameManager.Instance.AddCheckpoint(transform.position);
+        }
+    }
 
-            Debug.Log("到达存档点！");
+    private void DisableGlow()
+    {
+        if (glowLight != null)
+        {
+            glowLight.enabled = false; // 或者用动画渐隐
         }
     }
 }
