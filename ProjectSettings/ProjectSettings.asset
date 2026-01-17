@@ -12,8 +12,8 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: Tongji D&I GROUP
-  productName: Rainbow-at-Times-Ebb
+  companyName: 'Tongji D&I : R.A.T.E.'
+  productName: Aftermath
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -293,7 +293,7 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: ce59d6cb07d3ebd4ea406cd87c81af72, type: 3}
+      m_Icon: {fileID: 2800000, guid: b14eb411f0b863c4db9b9b6dffe11790, type: 3}
       m_Width: 128
       m_Height: 128
       m_Kind: 0
